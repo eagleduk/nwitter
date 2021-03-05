@@ -1,4 +1,4 @@
-import { authService } from "FBInstance";
+import { authService, firebaseInstance } from "FBInstance";
 import { useState } from "react";
 
 const AppAuth = () => {
@@ -37,6 +37,17 @@ const AppAuth = () => {
 
   const toggleAccount = () => setNewAccount((prev) => !prev);
 
+  const onSocialClick = (event) => {
+    const {
+      target: { name },
+    } = event;
+    let provider;
+    if (name === "google") {
+      provider = new firebaseInstance.auth.GoogleAuthProvider();
+    }
+    authService.signInWithPopup(provider);
+  };
+
   return (
     <div>
       <form onSubmit={onSubmit}>
@@ -66,7 +77,9 @@ const AppAuth = () => {
         {newAccount ? "Sign In" : "Create Account"}
       </span>
       <div>
-        <button>Continue with Google</button>
+        <button name="google" onClick={onSocialClick}>
+          Continue with Google
+        </button>
       </div>
     </div>
   );
