@@ -1,8 +1,24 @@
 import { dbService } from "FBInstance";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const AppHome = () => {
   const [nweet, setNweet] = useState("");
+  const [nweets, setNweets] = useState([]);
+
+  const getNweets = async () => {
+    const dbNweets = await dbService.collection("nweets").get();
+    dbNweets.forEach((document) => {
+      const temp = {
+        ...document.data(),
+        id: document.id,
+      };
+      setNweets((prev) => [temp, ...prev]);
+    });
+  };
+
+  useEffect(() => {
+    getNweets();
+  }, []);
 
   const onChange = (event) => {
     const {
@@ -13,7 +29,7 @@ const AppHome = () => {
 
   const onSubmit = async (event) => {
     event.preventDefault();
-    await dbService.collection("nweet").add({
+    await dbService.collection("nweets").add({
       nweet,
       createAt: Date.now(),
     });
@@ -32,6 +48,12 @@ const AppHome = () => {
         />
         <input type="submit" value="Nweet" />
       </form>
+
+      {nweets.map((nweet) => (
+        <div key={nweet.id}>
+          <h4>{nweet.nweet}</h4>
+        </div>
+      ))}
     </div>
   );
 };
