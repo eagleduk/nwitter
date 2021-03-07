@@ -1,3 +1,4 @@
+import { dbService } from "FBInstance";
 import { useState } from "react";
 
 const AppHome = () => {
@@ -10,8 +11,13 @@ const AppHome = () => {
     setNweet(value);
   };
 
-  const onSubmit = (event) => {
+  const onSubmit = async (event) => {
     event.preventDefault();
+    await dbService.collection("nweet").add({
+      nweet,
+      createAt: Date.now(),
+    });
+    setNweet("");
   };
 
   return (
