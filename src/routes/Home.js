@@ -7,6 +7,8 @@ const AppHome = ({ userObj }) => {
   const [nweet, setNweet] = useState("");
   // 등록된 nweet 들의 리스트에 대한 Hook
   const [nweets, setNweets] = useState([]);
+  // 첨부 파일에 대한 Hook
+  const [attachment, setAttachment] = useState(null);
 
   useEffect(() => {
     // 등록된 nweet 의 상태를 감지
@@ -38,6 +40,26 @@ const AppHome = ({ userObj }) => {
     setNweet("");
   };
 
+  const onChangeAttachment = (event) => {
+    const {
+      target: { files },
+    } = event;
+    const file = files[0];
+
+    const reader = new FileReader();
+    reader.onloadend = (finishEvent) => {
+      const {
+        target: { result },
+      } = finishEvent;
+      setAttachment(result);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const onAttachmentClear = (event) => {
+    setAttachment(null);
+  };
+
   return (
     <div>
       <form onSubmit={onSubmit}>
@@ -49,6 +71,13 @@ const AppHome = ({ userObj }) => {
           onChange={onChange}
         />
         <input type="submit" value="Nweet" />
+        <input type="file" accept="image/*" onChange={onChangeAttachment} />
+        {attachment && (
+          <div>
+            <img src={attachment} width="50px" height="50px" alt="" />
+            <button onClick={onAttachmentClear}>Clear</button>
+          </div>
+        )}
       </form>
 
       {nweets.map((nweet) => (
