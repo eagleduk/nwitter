@@ -1,5 +1,6 @@
 import Nweet from "components/Nweet";
-import { dbService } from "FBInstance";
+import { v4 as uuidv4 } from "uuid";
+import { dbService, storageService } from "FBInstance";
 import { useEffect, useState } from "react";
 
 const AppHome = ({ userObj }) => {
@@ -32,12 +33,26 @@ const AppHome = ({ userObj }) => {
   // form 의 submit 함수 - nweet 등록
   const onSubmit = async (event) => {
     event.preventDefault();
+    let attachmentUrl = null;
+    if (attachment) {
+      const attachmentRef = await storageService
+        .ref()
+        .child(`${userObj.uid}/${uuidv4()}`);
+      const attachmentTemp = await attachmentRef.putString(
+        attachment,
+        "data_url"
+      );
+      attachmentUrl = await attachmentTemp.ref.getDownloadURL();
+    }
+
     await dbService.collection("nweets").add({
       text: nweet,
       createAt: Date.now(),
       creatorId: userObj.uid,
+      attachmentUrl: attachmentUrl ? attachmentUrl : null,
     });
     setNweet("");
+    setAttachment(null);
   };
 
   const onChangeAttachment = (event) => {
