@@ -1,3 +1,4 @@
+import Nweet from "components/Nweet";
 import { dbService } from "FBInstance";
 import { useEffect, useState } from "react";
 
@@ -46,9 +47,11 @@ const AppHome = ({ userObj }) => {
       </form>
 
       {nweets.map((nweet) => (
-        <div key={nweet.id}>
-          <h4>{nweet.text}</h4>
-        </div>
+        <Nweet
+          key={nweet.id}
+          nweetObj={nweet}
+          isOwner={nweet.uid === userObj.uid}
+        />
       ))}
     </div>
   );
