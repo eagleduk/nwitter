@@ -1,4 +1,4 @@
-import { dbService } from "FBInstance";
+import { dbService, storageService } from "FBInstance";
 import { useState } from "react";
 
 const Nweet = ({ nweetObj, isOwner }) => {
@@ -13,6 +13,7 @@ const Nweet = ({ nweetObj, isOwner }) => {
     if (isDelete) {
       //await dbService.collection(`nweets`).doc(nweetObj.id).delete();
       await dbService.doc(`nweets/${nweetObj.id}`).delete();
+      await storageService.refFromURL(nweetObj.attachmentUrl).delete();
     }
   };
 

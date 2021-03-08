@@ -85,8 +85,8 @@ const AppHome = ({ userObj }) => {
           maxLength={120}
           onChange={onChange}
         />
-        <input type="submit" value="Nweet" />
         <input type="file" accept="image/*" onChange={onChangeAttachment} />
+        <input type="submit" value="Nweet" />
         {attachment && (
           <div>
             <img src={attachment} width="50px" height="50px" alt="" />
