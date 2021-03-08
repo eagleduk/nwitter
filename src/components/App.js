@@ -4,16 +4,14 @@ import { authService } from "FBInstance";
 
 function App() {
   const [init, setInit] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // 유저 상태에 대한 Hook
   const [userObj, setUserObj] = useState(null);
 
   useEffect(() => {
+    // 인증에 대한 변화가 감지되었을 때
     authService.onAuthStateChanged((user) => {
       if (user) {
-        setIsLoggedIn(true);
         setUserObj(user);
-      } else {
-        setIsLoggedIn(false);
       }
       setInit(true);
     });
@@ -21,7 +19,7 @@ function App() {
   return (
     <>
       {init ? (
-        <AppRouter isLoggedIn={isLoggedIn} userObj={userObj} />
+        <AppRouter isLoggedIn={Boolean(userObj)} userObj={userObj} />
       ) : (
         "Loading...."
       )}
