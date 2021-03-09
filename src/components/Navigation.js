@@ -1,6 +1,6 @@
 const { Link } = require("react-router-dom");
 
-const Navigation = () => {
+const Navigation = ({ userObj }) => {
   return (
     <nav>
       <ul>
@@ -8,7 +8,9 @@ const Navigation = () => {
           <Link to="/">Home</Link>
         </li>
         <li>
-          <Link to="/profile">My Profile</Link>
+          <Link to="/profile">
+            {userObj.displayName ? `${userObj.displayName}'s` : "My"} Profile
+          </Link>
         </li>
       </ul>
     </nav>

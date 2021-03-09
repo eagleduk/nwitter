@@ -11,15 +11,34 @@ function App() {
     // 인증에 대한 변화가 감지되었을 때
     authService.onAuthStateChanged((user) => {
       if (user) {
-        setUserObj(user);
+        //setUserObj(user);
+        setUserObj({
+          uid: user.uid,
+          displayName: user.displayName,
+          updateProfile: (args) => user.updateProfile(args),
+        });
       }
       setInit(true);
     });
   }, []);
+
+  const userUpdate = () => {
+    const user = authService.currentUser;
+    setUserObj({
+      uid: user.uid,
+      displayName: user.displayName,
+      updateProfile: (args) => user.updateProfile(args),
+    });
+  };
+
   return (
     <>
       {init ? (
-        <AppRouter isLoggedIn={Boolean(userObj)} userObj={userObj} />
+        <AppRouter
+          isLoggedIn={Boolean(userObj)}
+          userObj={userObj}
+          userUpdate={userUpdate}
+        />
       ) : (
         "Loading...."
       )}
