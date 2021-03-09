@@ -1,6 +1,6 @@
 import Nweet from "components/Nweet";
 
-import { dbService, storageService } from "FBInstance";
+import { dbService } from "FBInstance";
 import { useEffect, useState } from "react";
 import NweetFactory from "components/NweetFactory";
 
@@ -20,15 +20,17 @@ const AppHome = ({ userObj }) => {
   }, []);
 
   return (
-    <div>
+    <div className="container">
       <NweetFactory userObj={userObj} />
-      {nweets.map((nweet) => (
-        <Nweet
-          key={nweet.id}
-          nweetObj={nweet}
-          isOwner={nweet.creatorId === userObj.uid}
-        />
-      ))}
+      <div style={{ marginTop: 30 }}>
+        {nweets.map((nweet) => (
+          <Nweet
+            key={nweet.id}
+            nweetObj={nweet}
+            isOwner={nweet.creatorId === userObj.uid}
+          />
+        ))}
+      </div>
     </div>
   );
 };

@@ -1,5 +1,8 @@
-import { dbService, storageService } from "FBInstance";
 import { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrash, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
+
+import { dbService, storageService } from "FBInstance";
 
 const Nweet = ({ nweetObj, isOwner }) => {
   // Nweet이 수정중 상태인지 판별하는 Hook
@@ -42,10 +45,10 @@ const Nweet = ({ nweetObj, isOwner }) => {
   };
 
   return (
-    <div>
+    <div className="nweet">
       {isEditing ? (
         <>
-          <form onSubmit={onSubmit}>
+          <form onSubmit={onSubmit} className="container nweetEdit">
             <input
               type="text"
               value={newText}
@@ -53,26 +56,27 @@ const Nweet = ({ nweetObj, isOwner }) => {
               placeholder="Update Nweet"
               required
             />
-            <input type="submit" value="Update Nweet" />
-            <button onClick={onToggleEditing}>Cancel</button>
+            <input type="submit" value="Update Nweet" className="formBtn" />
+            <button onClick={onToggleEditing} className="formBtn cancelBtn">
+              Cancel
+            </button>
           </form>
         </>
       ) : (
         <>
           <h4>{nweetObj.text}</h4>
           {nweetObj.attachmentUrl && (
-            <img
-              src={nweetObj.attachmentUrl}
-              width="50px"
-              height="50px"
-              alt=""
-            />
+            <img src={nweetObj.attachmentUrl} alt="" />
           )}
           {isOwner && (
-            <>
-              <button onClick={onDeleteNweet}>Delete Nweet</button>
-              <button onClick={onToggleEditing}>Update Nweet</button>
-            </>
+            <div className="nweet__actions">
+              <span onClick={onDeleteNweet}>
+                <FontAwesomeIcon icon={faTrash} />
+              </span>
+              <span onClick={onToggleEditing}>
+                <FontAwesomeIcon icon={faPencilAlt} />
+              </span>
+            </div>
           )}
         </>
       )}
