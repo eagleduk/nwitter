@@ -13,7 +13,10 @@ const Profile = ({ userObj, userUpdate }) => {
       .orderBy("createAt", "desc")
       .get();
     const myNweets = nweets.docs.map((nweet) => {
-      return nweet.data();
+      return {
+        ...nweet.data(),
+        id: nweet.id,
+      };
     });
     setNweets(myNweets);
   };
